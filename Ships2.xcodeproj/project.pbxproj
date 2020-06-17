@@ -15,6 +15,10 @@
 		E1763DB62498E34E00E09DAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1763DB42498E34E00E09DAD /* Main.storyboard */; };
 		E1763DB82498E35000E09DAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1763DB72498E35000E09DAD /* Assets.xcassets */; };
 		E1763DBB2498E35000E09DAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1763DB92498E35000E09DAD /* LaunchScreen.storyboard */; };
+		E1C35A452499345E00B8AD87 /* Rain.sks in Resources */ = {isa = PBXBuildFile; fileRef = E1C35A442499345E00B8AD87 /* Rain.sks */; };
+		E1C35A5124994BA300B8AD87 /* ShipWaves.sks in Resources */ = {isa = PBXBuildFile; fileRef = E1C35A5024994BA300B8AD87 /* ShipWaves.sks */; };
+		E1C35A532499523C00B8AD87 /* Configuration.sks in Resources */ = {isa = PBXBuildFile; fileRef = E1C35A522499523C00B8AD87 /* Configuration.sks */; };
+		E1C35A562499529000B8AD87 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C35A552499529000B8AD87 /* Configuration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +32,10 @@
 		E1763DB72498E35000E09DAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E1763DBA2498E35000E09DAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E1763DBC2498E35000E09DAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E1C35A442499345E00B8AD87 /* Rain.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Rain.sks; sourceTree = "<group>"; };
+		E1C35A5024994BA300B8AD87 /* ShipWaves.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ShipWaves.sks; sourceTree = "<group>"; };
+		E1C35A522499523C00B8AD87 /* Configuration.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Configuration.sks; sourceTree = "<group>"; };
+		E1C35A552499529000B8AD87 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,17 +68,29 @@
 		E1763DA92498E34E00E09DAD /* Ships2 */ = {
 			isa = PBXGroup;
 			children = (
+				E1C35A542499525200B8AD87 /* Scenes */,
 				E1763DAA2498E34E00E09DAD /* AppDelegate.swift */,
-				E1763DAC2498E34E00E09DAD /* GameScene.sks */,
 				E1763DAE2498E34E00E09DAD /* Actions.sks */,
-				E1763DB02498E34E00E09DAD /* GameScene.swift */,
+				E1C35A442499345E00B8AD87 /* Rain.sks */,
 				E1763DB22498E34E00E09DAD /* GameViewController.swift */,
 				E1763DB42498E34E00E09DAD /* Main.storyboard */,
 				E1763DB72498E35000E09DAD /* Assets.xcassets */,
 				E1763DB92498E35000E09DAD /* LaunchScreen.storyboard */,
 				E1763DBC2498E35000E09DAD /* Info.plist */,
+				E1C35A5024994BA300B8AD87 /* ShipWaves.sks */,
 			);
 			path = Ships2;
+			sourceTree = "<group>";
+		};
+		E1C35A542499525200B8AD87 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				E1763DB02498E34E00E09DAD /* GameScene.swift */,
+				E1C35A552499529000B8AD87 /* Configuration.swift */,
+				E1763DAC2498E34E00E09DAD /* GameScene.sks */,
+				E1C35A522499523C00B8AD87 /* Configuration.sks */,
+			);
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,9 +151,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1C35A532499523C00B8AD87 /* Configuration.sks in Resources */,
 				E1763DB62498E34E00E09DAD /* Main.storyboard in Resources */,
+				E1C35A452499345E00B8AD87 /* Rain.sks in Resources */,
 				E1763DAD2498E34E00E09DAD /* GameScene.sks in Resources */,
 				E1763DB82498E35000E09DAD /* Assets.xcassets in Resources */,
+				E1C35A5124994BA300B8AD87 /* ShipWaves.sks in Resources */,
 				E1763DBB2498E35000E09DAD /* LaunchScreen.storyboard in Resources */,
 				E1763DAF2498E34E00E09DAD /* Actions.sks in Resources */,
 			);
@@ -148,6 +171,7 @@
 			files = (
 				E1763DB12498E34E00E09DAD /* GameScene.swift in Sources */,
 				E1763DB32498E34E00E09DAD /* GameViewController.swift in Sources */,
+				E1C35A562499529000B8AD87 /* Configuration.swift in Sources */,
 				E1763DAB2498E34E00E09DAD /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,40 +11,51 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-
+    
+    @IBOutlet weak var rotateButton: UIButton!
+    
+    let configuration = Configuration()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if let view = self.view as! SKView? {
-            // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "GameScene") {
-                // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
-                
-                // Present the scene
-                view.presentScene(scene)
-            }
-            
-            view.ignoresSiblingOrder = true
-            
-            view.showsFPS = true
-            view.showsNodeCount = true
-        }
+        rotateButton.isHidden = true
+        presentScene(view: self.view as! SKView, sceneName: "GameScene")
     }
-
+    
     override var shouldAutorotate: Bool {
-        return true
+        return false
     }
-
+    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
+            return .portrait
         } else {
-            return .all
+            return .portrait
         }
     }
-
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+    @IBAction func startPressed(_ sender: UIButton) {
+        if sender.currentTitle == "Start" {
+            presentScene(view: self.view as! SKView, sceneName: "Configuration")
+            rotateButton.isHidden = false
+            sender.isHidden = true
+        } else if sender.currentTitle == "Rotate" {
+            configuration.rotation()
+            
+        }
+    }
+    
+    func presentScene(view: SKView, sceneName: String) {
+        //    if let view = self.view as! SKView? {
+        if let scene = SKScene(fileNamed: sceneName) {
+            scene.scaleMode = .aspectFill
+            view.presentScene(scene, transition: .fade(with: UIColor.white, duration: 0.5))
+            view.showsFPS = true
+        }
+    }
+    
 }
