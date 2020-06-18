@@ -12,13 +12,8 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     
-    @IBOutlet weak var rotateButton: UIButton!
-    
-    let configuration = Configuration()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        rotateButton.isHidden = true
         presentScene(view: self.view as! SKView, sceneName: "GameScene")
     }
     
@@ -39,14 +34,8 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func startPressed(_ sender: UIButton) {
-        if sender.currentTitle == "Start" {
             presentScene(view: self.view as! SKView, sceneName: "Configuration")
-            rotateButton.isHidden = false
             sender.isHidden = true
-        } else if sender.currentTitle == "Rotate" {
-            configuration.rotation()
-            
-        }
     }
     
     func presentScene(view: SKView, sceneName: String) {

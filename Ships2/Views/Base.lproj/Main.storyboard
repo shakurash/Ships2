@@ -25,29 +25,14 @@
                                     <action selector="startPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="792-6l-PTT"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yNY-YI-qcu">
-                                <rect key="frame" x="178.5" y="64" width="57" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Rotate">
-                                    <color key="titleColor" red="0.0" green="0.98106676339999999" blue="0.57369142770000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="startPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="fAA-93-VRo"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="XAb-R8-Hqx" firstAttribute="centerY" secondItem="3se-qz-xqx" secondAttribute="centerY" id="2ke-86-Ri9"/>
-                            <constraint firstItem="yNY-YI-qcu" firstAttribute="centerX" secondItem="3se-qz-xqx" secondAttribute="centerX" id="dZt-vE-p00"/>
-                            <constraint firstItem="yNY-YI-qcu" firstAttribute="top" secondItem="4qk-I5-YsI" secondAttribute="top" constant="20" id="g95-Y8-SWU"/>
                             <constraint firstItem="XAb-R8-Hqx" firstAttribute="centerX" secondItem="3se-qz-xqx" secondAttribute="centerX" id="iuu-aV-itY"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
                     </view>
-                    <connections>
-                        <outlet property="rotateButton" destination="yNY-YI-qcu" id="8eZ-YR-vQS"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>

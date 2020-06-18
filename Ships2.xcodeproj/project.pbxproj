@@ -49,6 +49,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E143BE55249A6F4400323865 /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				E1763DAE2498E34E00E09DAD /* Actions.sks */,
+			);
+			path = Actions;
+			sourceTree = "<group>";
+		};
+		E143BE56249A6F6100323865 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				E1C35A5024994BA300B8AD87 /* ShipWaves.sks */,
+				E1C35A442499345E00B8AD87 /* Rain.sks */,
+			);
+			path = Effects;
+			sourceTree = "<group>";
+		};
+		E143BE57249A6F7D00323865 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E1763DB22498E34E00E09DAD /* GameViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		E143BE58249A6F8E00323865 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E1763DB42498E34E00E09DAD /* Main.storyboard */,
+				E1763DB92498E35000E09DAD /* LaunchScreen.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		E1763D9E2498E34E00E09DAD = {
 			isa = PBXGroup;
 			children = (
@@ -68,16 +102,14 @@
 		E1763DA92498E34E00E09DAD /* Ships2 */ = {
 			isa = PBXGroup;
 			children = (
+				E143BE58249A6F8E00323865 /* Views */,
+				E143BE57249A6F7D00323865 /* Controllers */,
+				E143BE56249A6F6100323865 /* Effects */,
+				E143BE55249A6F4400323865 /* Actions */,
 				E1C35A542499525200B8AD87 /* Scenes */,
 				E1763DAA2498E34E00E09DAD /* AppDelegate.swift */,
-				E1763DAE2498E34E00E09DAD /* Actions.sks */,
-				E1C35A442499345E00B8AD87 /* Rain.sks */,
-				E1763DB22498E34E00E09DAD /* GameViewController.swift */,
-				E1763DB42498E34E00E09DAD /* Main.storyboard */,
 				E1763DB72498E35000E09DAD /* Assets.xcassets */,
-				E1763DB92498E35000E09DAD /* LaunchScreen.storyboard */,
 				E1763DBC2498E35000E09DAD /* Info.plist */,
-				E1C35A5024994BA300B8AD87 /* ShipWaves.sks */,
 			);
 			path = Ships2;
 			sourceTree = "<group>";
