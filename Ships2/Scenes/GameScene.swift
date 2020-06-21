@@ -4,7 +4,6 @@ import GameplayKit
 class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
-        
         createShipWaves()
         createRain()
         createWaves()

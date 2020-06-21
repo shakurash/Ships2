@@ -7,12 +7,19 @@ class Configuration: SKScene {
     private var grid = [SKShapeNode]()
     private var shipToDeploy = SKSpriteNode()
     private var pickedShip: SKSpriteNode?
-    private var shipCounter = 10
+    private var shipCounter = 2
     private var shipSpawner = SKShapeNode()
     private var rotateButton = SKSpriteNode()
+    private var resetButton = SKSpriteNode()
+    private var playButton = SKSpriteNode()
+    
+    var gameViewController = GameViewController()
+    let engine = Engine()
+    let memory = Memory.shared
     
     override func didMove(to view: SKView) {
-        makeSpriteArray()
+        makeButtonSprites()
+        grid = engine.makeSpriteArray(from: self)
         makeShipYard()
         deployTheShip()
     }
@@ -25,6 +32,21 @@ class Configuration: SKScene {
                 self.pickedShip = shipToDeploy
             } else if rotateButton.contains(position) {
                 rotation()
+            } else if resetButton.contains(position){
+                gameViewController.presentScene(view: self.view!, sceneName: "Configuration")
+            } else if playButton.contains(position) {
+                setUserData()
+                gameViewController.presentScene(view: self.view!, sceneName: "GamePlay")
+                
+            }
+        }
+    }
+    
+    func setUserData() {
+        for box in grid {
+            if box.userData == ["marked": true] {
+                let save = Board(name: box.name!, userData: box.userData as! [String : Bool])
+                memory.board.append(save)
             }
         }
     }
@@ -40,8 +62,10 @@ class Configuration: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { //drop the ship
-        guard let shipDroped = pickedShip else { return }
-        checkIfShipCanLand(ship: shipDroped)
+        guard let shipDroped = pickedShip,
+            let loc = touches.first?.location(in: self)
+            else { return }
+        checkIfShipCanLand(ship: shipDroped, location: loc)
     }
     
     //MARK: - marking grids with colors depending if user moves the ship above grid (turn green) or drop (turn red)
@@ -63,7 +87,7 @@ class Configuration: SKScene {
         }
     }
     
-    func blockBoxes(ship: SKSpriteNode) {
+    func blockBoxes(ship: SKSpriteNode) { //block boxes making them red depending on ship size
         let cordX = locationRotation().x
         let cordY = locationRotation().y
         
@@ -73,21 +97,29 @@ class Configuration: SKScene {
                     box.userData = ["marked": true]
                 }
             } else if ship.name == "mediumShip" {
-                if box.contains(ship.position) || box.contains(CGPoint(x: ship.position.x - cordX, y: ship.position.y - cordY)) {
+                if box.contains(CGPoint(x: ship.position.x + cordX , y: ship.position.y + cordY)) ||
+                    box.contains(CGPoint(x: ship.position.x - (cordX / 2), y: ship.position.y - (cordY / 2)))
+                {
                     box.userData = ["marked": true]
                 }
             } else if ship.name == "bigShip" {
-                if box.contains(ship.position) || box.contains(CGPoint(x: ship.position.x - cordX, y: ship.position.y - cordY)) || box.contains(CGPoint(x: ship.position.x + cordX, y: ship.position.y + cordY)) {
+                if box.contains(ship.position) ||
+                    box.contains(CGPoint(x: ship.position.x - cordX, y: ship.position.y - cordY)) ||
+                    box.contains(CGPoint(x: ship.position.x + cordX, y: ship.position.y + cordY))
+                {
                     box.userData = ["marked": true]
                 }
             } else if ship.name == "battleShip" {
-                if box.contains(ship.position) || box.contains(CGPoint(x: ship.position.x - cordX, y: ship.position.y - cordY)) || box.contains(CGPoint(x: ship.position.x + cordX, y: ship.position.y + cordY)) || box.contains(CGPoint(x: ship.position.x - (cordX * 2), y: ship.position.y - (cordY * 2))) {
+                if box.contains(CGPoint(x: ship.position.x + cordX , y: ship.position.y + cordY)) ||
+                    box.contains(CGPoint(x: ship.position.x - cordX, y: ship.position.y - cordY)) ||
+                    box.contains(CGPoint(x: ship.position.x + (cordX * 2), y: ship.position.y + (cordY * 2))) ||
+                    box.contains(CGPoint(x: ship.position.x - (cordX * 2), y: ship.position.y - (cordY * 2)))
+                {
                     box.userData = ["marked": true]
                 }
             }
             
-            if box.userData?["marked"] as? Bool == true {
-                //box.fillColor = UIColor.blue
+            if box.userData?["marked"] as? Bool == true { //marking boxes where ship lays help mark boxes around each block every time
                 let posX = box.position.x
                 let posY = box.position.y
                 for box in grid {
@@ -106,39 +138,26 @@ class Configuration: SKScene {
                 }
             }
         }
-        
     }
-    
-    
     
     //MARK: - preparing the scene
-    func makeSpriteArray() {
-        var squareFirstNumber = 0
-        var squareSecondNumber = 0
-        var counter = 9
-        var count = 9
-        
-        while counter >= 0 {
-            while count >= 0 {
-                let stringName = "\(squareFirstNumber)"+"\(squareSecondNumber)"
-                if let square: SKShapeNode = self.childNode(withName: stringName) as? SKShapeNode {
-                    grid.append(square)
-                }
-                squareSecondNumber += 1
-                count -= 1
-            }
-            squareFirstNumber += 1
-            squareSecondNumber = 0
-            count = 9
-            counter -= 1
-        }
-    }
-    
     func makeShipYard() {
         guard let shipYard = self.childNode(withName: "shipYard") else { return }
-        guard let label = self.childNode(withName: "rotate") else { return }
         shipSpawner = shipYard as! SKShapeNode
+        
+    }
+    
+    func makeButtonSprites() {
+        guard
+            let label = self.childNode(withName: "rotate"),
+            let reset = self.childNode(withName: "reset"),
+            let play = self.childNode(withName: "play")
+            else { return }
         rotateButton = label as! SKSpriteNode
+        resetButton = reset as! SKSpriteNode
+        resetButton.isHidden = true
+        playButton = play as! SKSpriteNode
+        playButton.isHidden = true
     }
     
     //MARK: - managing ships spawn and placing them on array
@@ -178,40 +197,74 @@ class Configuration: SKScene {
     }
     
     func deployAnotherShip() {
-        if shipCounter > 1 {
+        if shipCounter > 0 {
             shipCounter -= 1
+        }
+        if shipCounter < 10 {
+            resetButton.isHidden = false
+        } else {
+            resetButton.isHidden = true
+        }
+        if shipCounter == 0 {
+            playButton.isHidden = false
+        } else {
             deployTheShip()
         }
     }
     
-    func checkIfShipCanLand(ship: SKSpriteNode) {
+    func checkIfShipCanLand(ship: SKSpriteNode, location: CGPoint) {
         var didLand = false
         var counter = grid.count
         let cordX = locationRotation().x
         let cordY = locationRotation().y
         
-        for box in grid {
-            //check if ship touches the box and boxes arent occupied then snap ship to the boxes
+        for box in grid { //check if ship touches the box and boxes arent occupied then snap ship to the boxes
+            
             if box.contains(ship.position) && box.fillColor != UIColor.red {
-                
-                if ship.name == "mediumShip" || ship.name == "battleShip" { //different snap to grid if ship is medium or battle and depends on orientation
-                    ship.position = CGPoint(x: box.position.x - (cordX / 2), y: box.position.y - (cordY / 2))
-                } else {
-                    ship.position = box.position
+                let currentShipBoxPosition = box //remember the position (where currently user is holding ship) to pass it futher and drop/snap ship correctly
+                if ship.name == "smallShip" { didLand = shipAllowedToDrop(in: box, with: ship, cordX: cordX, cordY: cordY) }
+                else {
+                    for box in grid {
+                        if box.contains(CGPoint(x: location.x - cordX, y: location.y - cordY)) && box.fillColor != UIColor.red {
+                            if ship.name == "mediumShip" { didLand = shipAllowedToDrop(in: currentShipBoxPosition, with: ship, cordX: cordX, cordY: cordY) }
+                            else {
+                                for box in grid {
+                                    if box.contains(CGPoint(x: location.x + cordX, y: location.y + cordY)) && box.fillColor != UIColor.red {
+                                        if ship.name == "bigShip" { didLand = shipAllowedToDrop(in: currentShipBoxPosition, with: ship, cordX: cordX, cordY: cordY) }
+                                        else {
+                                            for box in grid {
+                                                if box.contains(CGPoint(x: location.x - (cordX * 2), y: location.y - (cordY * 2))) && box.fillColor != UIColor.red {
+                                                    didLand = shipAllowedToDrop(in: currentShipBoxPosition, with: ship, cordX: cordX, cordY: cordY)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                pickedShip = nil
-                didLand = true
-                blockBoxes(ship: ship)
-                deployAnotherShip()
             }
             
             
             counter -= 1
-        }   //if ship is not in array position then back him to the starting point (shipYard)
+        } //if ship is not in array position then back him to the starting point (shipYard)
         if counter <= 0 && didLand == false {
             ship.position = self.shipSpawner.position
             self.pickedShip = nil
         }
+    }
+    
+    func shipAllowedToDrop(in box: SKShapeNode, with ship: SKSpriteNode, cordX: CGFloat ,cordY: CGFloat) -> Bool {
+        if ship.name == "mediumShip" || ship.name == "battleShip" { //different snap to grid if ship is medium or battle and depends on orientation
+            ship.position = CGPoint(x: box.position.x - (cordX / 2), y: box.position.y - (cordY / 2))
+        } else {
+            ship.position = box.position
+        }
+        pickedShip = nil
+        blockBoxes(ship: ship)
+        deployAnotherShip()
+        return true
     }
     
     //MARK: - Rotation functions

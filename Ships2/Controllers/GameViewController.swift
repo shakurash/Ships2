@@ -39,12 +39,10 @@ class GameViewController: UIViewController {
     }
     
     func presentScene(view: SKView, sceneName: String) {
-        //    if let view = self.view as! SKView? {
         if let scene = SKScene(fileNamed: sceneName) {
             scene.scaleMode = .aspectFill
             view.presentScene(scene, transition: .fade(with: UIColor.white, duration: 0.5))
             view.showsFPS = true
         }
     }
-    
 }

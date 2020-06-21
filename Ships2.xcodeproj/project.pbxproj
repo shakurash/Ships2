@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E14414A5249F69EB0048C8A7 /* Memory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14414A4249F69EB0048C8A7 /* Memory.swift */; };
+		E14414A7249F7E8B0048C8A7 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14414A6249F7E8B0048C8A7 /* Board.swift */; };
+		E1449379249CEC5E00792AA7 /* GamePlay.sks in Resources */ = {isa = PBXBuildFile; fileRef = E1449378249CEC5E00792AA7 /* GamePlay.sks */; };
+		E144937B249CEC6B00792AA7 /* GamePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E144937A249CEC6B00792AA7 /* GamePlay.swift */; };
 		E1763DAB2498E34E00E09DAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1763DAA2498E34E00E09DAD /* AppDelegate.swift */; };
 		E1763DAD2498E34E00E09DAD /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = E1763DAC2498E34E00E09DAD /* GameScene.sks */; };
 		E1763DAF2498E34E00E09DAD /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = E1763DAE2498E34E00E09DAD /* Actions.sks */; };
@@ -19,9 +23,14 @@
 		E1C35A5124994BA300B8AD87 /* ShipWaves.sks in Resources */ = {isa = PBXBuildFile; fileRef = E1C35A5024994BA300B8AD87 /* ShipWaves.sks */; };
 		E1C35A532499523C00B8AD87 /* Configuration.sks in Resources */ = {isa = PBXBuildFile; fileRef = E1C35A522499523C00B8AD87 /* Configuration.sks */; };
 		E1C35A562499529000B8AD87 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C35A552499529000B8AD87 /* Configuration.swift */; };
+		E1F0399D249F82F000FF5ECC /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F0399C249F82F000FF5ECC /* Engine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E14414A4249F69EB0048C8A7 /* Memory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memory.swift; sourceTree = "<group>"; };
+		E14414A6249F7E8B0048C8A7 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		E1449378249CEC5E00792AA7 /* GamePlay.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GamePlay.sks; sourceTree = "<group>"; };
+		E144937A249CEC6B00792AA7 /* GamePlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlay.swift; sourceTree = "<group>"; };
 		E1763DA72498E34E00E09DAD /* Ships2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ships2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1763DAA2498E34E00E09DAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1763DAC2498E34E00E09DAD /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -36,6 +45,7 @@
 		E1C35A5024994BA300B8AD87 /* ShipWaves.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ShipWaves.sks; sourceTree = "<group>"; };
 		E1C35A522499523C00B8AD87 /* Configuration.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Configuration.sks; sourceTree = "<group>"; };
 		E1C35A552499529000B8AD87 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		E1F0399C249F82F000FF5ECC /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +120,9 @@
 				E1763DAA2498E34E00E09DAD /* AppDelegate.swift */,
 				E1763DB72498E35000E09DAD /* Assets.xcassets */,
 				E1763DBC2498E35000E09DAD /* Info.plist */,
+				E14414A4249F69EB0048C8A7 /* Memory.swift */,
+				E14414A6249F7E8B0048C8A7 /* Board.swift */,
+				E1F0399C249F82F000FF5ECC /* Engine.swift */,
 			);
 			path = Ships2;
 			sourceTree = "<group>";
@@ -118,9 +131,11 @@
 			isa = PBXGroup;
 			children = (
 				E1763DB02498E34E00E09DAD /* GameScene.swift */,
-				E1C35A552499529000B8AD87 /* Configuration.swift */,
 				E1763DAC2498E34E00E09DAD /* GameScene.sks */,
+				E1C35A552499529000B8AD87 /* Configuration.swift */,
 				E1C35A522499523C00B8AD87 /* Configuration.sks */,
+				E1449378249CEC5E00792AA7 /* GamePlay.sks */,
+				E144937A249CEC6B00792AA7 /* GamePlay.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -187,6 +202,7 @@
 				E1763DB62498E34E00E09DAD /* Main.storyboard in Resources */,
 				E1C35A452499345E00B8AD87 /* Rain.sks in Resources */,
 				E1763DAD2498E34E00E09DAD /* GameScene.sks in Resources */,
+				E1449379249CEC5E00792AA7 /* GamePlay.sks in Resources */,
 				E1763DB82498E35000E09DAD /* Assets.xcassets in Resources */,
 				E1C35A5124994BA300B8AD87 /* ShipWaves.sks in Resources */,
 				E1763DBB2498E35000E09DAD /* LaunchScreen.storyboard in Resources */,
@@ -201,8 +217,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E14414A5249F69EB0048C8A7 /* Memory.swift in Sources */,
+				E144937B249CEC6B00792AA7 /* GamePlay.swift in Sources */,
 				E1763DB12498E34E00E09DAD /* GameScene.swift in Sources */,
 				E1763DB32498E34E00E09DAD /* GameViewController.swift in Sources */,
+				E14414A7249F7E8B0048C8A7 /* Board.swift in Sources */,
+				E1F0399D249F82F000FF5ECC /* Engine.swift in Sources */,
 				E1C35A562499529000B8AD87 /* Configuration.swift in Sources */,
 				E1763DAB2498E34E00E09DAD /* AppDelegate.swift in Sources */,
 			);
