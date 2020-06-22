@@ -5,14 +5,16 @@ class GamePlay: SKScene {
     
     let engine = Engine()
     var memory = Memory.shared
-    var playerBoard = [SKShapeNode]()
+    private var playerBoard = [SKShapeNode]()
+    private var enemyBoard = [SKShapeNode]()
     
     override func didMove(to view: SKView) {
         playerBoard = engine.makeSpriteArray(from: self)
-        setPlayerBoard()
+        enemyBoard = engine.setEnemyBoard(view: self)
+        setBoards()
     }
     
-    func setPlayerBoard() {
+    func setBoards() {
         for box in playerBoard {
             for value in memory.board {
                 if box.name == value.name && value.userData == ["marked": true] {
@@ -21,7 +23,9 @@ class GamePlay: SKScene {
                 }
             }
         }
+        //enemyBoard = engine.setEnemyBoard(view: self)
     }
-    
+
+
     
 }
