@@ -22,7 +22,6 @@ struct Engine {
         }
     }
     
-    
     func setEnemyBoard(view: SKScene) -> [SKShapeNode]{
         var shipCounter = 10
         let enemyArray = makeSpriteArray(from: view, enemy: true)
@@ -36,8 +35,8 @@ struct Engine {
                     switch shipCounter {
                         
                     case 7...10: //set smallShip
-                        box.fillColor = UIColor.blue
                         box.userData = ["marked": true]
+                        box.userData = ["ship": "smallShip\(shipCounter)"]
                         status = true
                         
                     case 4...6: //mediumShip
@@ -53,11 +52,11 @@ struct Engine {
                         if box1 != nil && box2 != nil {
                             for box in enemyArray {
                                 if box.name == box1 {
-                                    box.fillColor = UIColor.blue
                                     box.userData = ["marked": true]
+                                    box.userData = ["ship": "mediumShip\(shipCounter)"]
                                 } else if box.name == box2 {
-                                    box.fillColor = UIColor.blue
                                     box.userData = ["marked": true]
+                                    box.userData = ["ship": "mediumShip\(shipCounter)"]
                                 }
                             }
                             status = true
@@ -82,14 +81,14 @@ struct Engine {
                         if box1 != nil && box2 != nil && box3 != nil{
                             for box in enemyArray {
                                 if box.name == box1 {
-                                    box.fillColor = UIColor.blue
                                     box.userData = ["marked": true]
+                                    box.userData = ["ship": "bigShip\(shipCounter)"]
                                 } else if box.name == box2 {
-                                    box.fillColor = UIColor.blue
                                     box.userData = ["marked": true]
+                                    box.userData = ["ship": "bigShip\(shipCounter)"]
                                 } else if box.name == box3 {
-                                    box.fillColor == UIColor.blue
                                     box.userData = ["marked": true]
+                                    box.userData = ["ship": "bigShip\(shipCounter)"]
                                 }
                             }
                             status = true
@@ -120,17 +119,17 @@ struct Engine {
                         if box1 != nil && box2 != nil && box3 != nil && box4 != nil{
                             for box in enemyArray {
                                 if box.name == box1 {
-                                    box.fillColor = UIColor.blue
                                     box.userData = ["marked": true]
+                                    box.userData = ["ship": "battleShip"]
                                 } else if box.name == box2 {
-                                    box.fillColor = UIColor.blue
                                     box.userData = ["marked": true]
+                                    box.userData = ["ship": "battleShip"]
                                 } else if box.name == box3 {
-                                    box.fillColor = UIColor.blue
                                     box.userData = ["marked": true]
+                                    box.userData = ["ship": "battleShip"]
                                 } else if box.name == box4 {
-                                    box.fillColor = UIColor.blue
                                     box.userData = ["marked": true]
+                                    box.userData = ["ship": "battleShip"]
                                 }
                             }
                             status = true
@@ -147,6 +146,7 @@ struct Engine {
                 }
             }
         }
+        blockBoxesAround(grid: enemyArray, hide: true) //hide red boxes
         return enemyArray
     }
     
@@ -156,13 +156,37 @@ struct Engine {
         return "\(cord1)\(cord2)e"
     }
     
-    func blockBoxesAround(grid: [SKShapeNode]) {
+    func checkIfShipSinks(box: SKShapeNode, board: [SKShapeNode]) -> [SKShapeNode] {
+        let posX = box.position.x
+        let posY = box.position.y
+        var isShipSinked = true
+        for box in board {
+            if (box.contains(CGPoint(x: CGFloat(posX - 50), y: posY)) ||
+            box.contains(CGPoint(x: CGFloat(posX + 50), y: posY)) ||
+            box.contains(CGPoint(x: posX, y: (posY + 50))) ||
+            box.contains(CGPoint(x: posX, y: (posY - 50))) ) && box.userData == ["marked": true]
+            {
+                isShipSinked = false
+            }
+        }
+        if isShipSinked {
+            let shipType = box.userData?["ship"] as? String
+            blockBoxesAround(grid: board, sink: true, ship: shipType)
+        }
+        return board
+    }
+    
+    func blockBoxesAround(grid: [SKShapeNode], hide: Bool? = false, sink: Bool? = false, ship: String? = nil) {
+        var status = true
         for box in grid {
-            if box.userData?["marked"] as? Bool == true { //marking boxes where ship lays help mark boxes around each block every time
+            if sink! { // if entire ship is hitted then mark red all squares around it
+                status = false
+            }
+            if box.userData?["marked"] as? Bool == status { //marking boxes where ship lays help mark boxes around each block every time
                 let posX = box.position.x
                 let posY = box.position.y
                 for box in grid {
-                    if box.contains(CGPoint(x: CGFloat(posX - 50), y: posY)) ||
+                    if (box.contains(CGPoint(x: CGFloat(posX - 50), y: posY)) ||
                         box.contains(CGPoint(x: CGFloat(posX + 50), y: posY)) ||
                         box.contains(CGPoint(x: posX, y: (posY + 50))) ||
                         box.contains(CGPoint(x: posX, y: (posY - 50))) ||
@@ -170,9 +194,13 @@ struct Engine {
                         box.contains(CGPoint(x: (posX - 50), y: (posY - 50))) ||
                         box.contains(CGPoint(x: (posX + 50), y: (posY - 50))) ||
                         box.contains(CGPoint(x: (posX - 50), y: (posY + 50))) ||
-                        box.contains(CGPoint(x: posX, y: posY))
+                        box.contains(CGPoint(x: posX, y: posY)) ) && box.userData != ["marked": false]
                     {
-                        box.fillColor = UIColor.red
+                        if hide! { // when AI stops putting ship on board hide all red boxes (turn back to default board color)
+                            box.fillColor = UIColor(red: 70/255, green: 70/255, blue: 70/255, alpha: 1.0)
+                        } else {
+                            box.fillColor = UIColor.red
+                        }
                     }
                 }
             }
