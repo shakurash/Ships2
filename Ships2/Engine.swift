@@ -3,10 +3,25 @@ import Foundation
 
 struct Engine {
     
-    func aiTurn() { //this is gonna be super AI brain
-        
-        
+    func aiTurn(playerBoard: [SKShapeNode]) { //this is gonna be super AI brain
+        var didHit = false
+        while !didHit {
+            let coordinates = aiRandomShipCoordinates()
+            let properCoord = coordinates.dropLast()
+            for box in playerBoard {
+                if box.name == String(properCoord) && box.fillColor != UIColor.red && box.userData == ["marked": true] {
+                    box.fillColor = UIColor.red
+                    didHit = true
+                } else if box.name == String(properCoord) && box.fillColor == UIColor.red {
+                    didHit = false
+                } else if box.name == String(properCoord) && box.fillColor != UIColor.red {
+                    box.fillColor = UIColor.red
+                    didHit = true
+                }
+            }
+        }
     }
+    
     
     func setEnemyBoard(view: SKScene) -> [SKShapeNode]{
         var shipCounter = 10
@@ -140,23 +155,6 @@ struct Engine {
         let cord2 = Int.random(in: 0...9)
         return "\(cord1)\(cord2)e"
     }
-    
-    func checkIfShipCanPlaced(grid: [SKShapeNode], box: SKShapeNode, counter: Int) -> Bool {
-        //check if ship touches the box and boxes arent occupied then snap ship to the boxes
-        print("checking")
-        let posX = box.position.x
-        let posY = box.position.y
-        if counter > 4 {
-            for box in grid {
-                if box.contains(CGPoint(x: posX, y: posY - 50)) && box.fillColor != UIColor.red {
-                    box.fillColor = UIColor.blue
-                    return true
-                }
-            }
-        }
-        return false
-    }
-    
     
     func blockBoxesAround(grid: [SKShapeNode]) {
         for box in grid {
