@@ -3,6 +3,8 @@ import Foundation
 
 struct Engine {
     
+    let memory = Memory.shared
+    
     func aiTurn(playerBoard: [SKShapeNode]) { //this is gonna be super AI brain
         var didHit = false
         while !didHit {
@@ -36,6 +38,7 @@ struct Engine {
                         
                     case 7...10: //set smallShip
                         box.userData = ["marked": true, "ship": "smallShip\(shipCounter)"]
+                        memory.shipHitPoints["\(box.userData?["ship"] ?? "default")" ] = 1
                         status = true
                         
                     case 4...6: //mediumShip
@@ -51,11 +54,12 @@ struct Engine {
                         if box1 != nil && box2 != nil {
                             for box in enemyArray {
                                 if box.name == box1 {
-                                    box.userData = ["marked": true] //, "ship": "mediumShip\(shipCounter)"]
+                                    box.userData = ["marked": true, "ship": "mediumShip\(shipCounter)"]
                                 } else if box.name == box2 {
-                                    box.userData = ["marked": true] //, "ship": "mediumShip\(shipCounter)"]
+                                    box.userData = ["marked": true, "ship": "mediumShip\(shipCounter)"]
                                 }
                             }
+                            memory.shipHitPoints["\(box.userData?["ship"] ?? "default")" ] = 2
                             status = true
                         }
                         
@@ -78,13 +82,14 @@ struct Engine {
                         if box1 != nil && box2 != nil && box3 != nil{
                             for box in enemyArray {
                                 if box.name == box1 {
-                                    box.userData = ["marked": true] //, "ship": "bigShip\(shipCounter)"]
+                                    box.userData = ["marked": true, "ship": "bigShip\(shipCounter)"]
                                 } else if box.name == box2 {
-                                    box.userData = ["marked": true] //, "ship": "bigShip\(shipCounter)"]
+                                    box.userData = ["marked": true, "ship": "bigShip\(shipCounter)"]
                                 } else if box.name == box3 {
-                                    box.userData = ["marked": true] //, "ship": "bigShip\(shipCounter)"]
+                                    box.userData = ["marked": true, "ship": "bigShip\(shipCounter)"]
                                 }
                             }
+                            memory.shipHitPoints["\(box.userData?["ship"] ?? "default")" ] = 3
                             status = true
                         }
                         
@@ -122,6 +127,7 @@ struct Engine {
                                     box.userData = ["marked": true, "ship": "battleShip"]
                                 }
                             }
+                            memory.shipHitPoints["\(box.userData?["ship"] ?? "default")" ] = 4
                             status = true
                         }
                         
@@ -146,18 +152,15 @@ struct Engine {
     }
     
     func checkIfShipSinks(box: SKShapeNode, board: [SKShapeNode]) -> [SKShapeNode] {
-        let posX = box.position.x
-        let posY = box.position.y
-        var isShipSinked = true
-        for box in board {
-            if (box.contains(CGPoint(x: CGFloat(posX - 50), y: posY)) ||
-            box.contains(CGPoint(x: CGFloat(posX + 50), y: posY)) ||
-            box.contains(CGPoint(x: posX, y: (posY + 50))) ||
-            box.contains(CGPoint(x: posX, y: (posY - 50))) ) && box.userData == ["marked": true]
-            {
-                isShipSinked = false
-            }
+        let shipName = box.userData?["ship"] as? String
+        var isShipSinked = false
+
+        if memory.shipHitPoints[shipName!]! <= 1 { //better solution -> ship hitpoints ?
+            isShipSinked = true
+        } else {
+            memory.shipHitPoints[shipName!]! -= 1
         }
+
         if isShipSinked {
             let shipType = box.userData?["ship"] as? String
             blockBoxesAround(grid: board, sink: true, ship: shipType)
