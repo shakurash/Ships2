@@ -18,6 +18,9 @@ class GamePlay: SKScene {
         memory.turn = true //set player to move first
         setBoards() //load player ship configuration
         changeTurn() //upload current turn
+//        for n in enemyBoard {
+//            print(n.userData)
+//        }
     }
     
     func setBoards() {
@@ -47,9 +50,9 @@ class GamePlay: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first?.location(in: self)
         for box in enemyBoard {
-            if box.contains(touch!) && box.userData == ["marked": true] && memory.turn {
+            if box.contains(touch!) && box.userData?["marked"] as? Bool == true && memory.turn {
                 box.fillColor = UIColor.yellow
-                box.userData = ["marked": false]
+                box.userData?["marked"] = false
                 enemyBoard = engine.checkIfShipSinks(box: box, board: enemyBoard)
                 playerHits += 1
             } else if box.contains(touch!) && memory.turn && box.fillColor != UIColor.red && box.userData != ["marked": false]{
@@ -57,8 +60,8 @@ class GamePlay: SKScene {
                 memory.turn = false
                 changeTurn()
             }
-            checkWinCondition()
         }
+        checkWinCondition()
     }
     
     func checkWinCondition() {

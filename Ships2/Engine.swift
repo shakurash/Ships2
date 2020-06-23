@@ -35,8 +35,7 @@ struct Engine {
                     switch shipCounter {
                         
                     case 7...10: //set smallShip
-                        box.userData = ["marked": true]
-                        box.userData = ["ship": "smallShip\(shipCounter)"]
+                        box.userData = ["marked": true, "ship": "smallShip\(shipCounter)"]
                         status = true
                         
                     case 4...6: //mediumShip
@@ -52,11 +51,9 @@ struct Engine {
                         if box1 != nil && box2 != nil {
                             for box in enemyArray {
                                 if box.name == box1 {
-                                    box.userData = ["marked": true]
-                                    box.userData = ["ship": "mediumShip\(shipCounter)"]
+                                    box.userData = ["marked": true] //, "ship": "mediumShip\(shipCounter)"]
                                 } else if box.name == box2 {
-                                    box.userData = ["marked": true]
-                                    box.userData = ["ship": "mediumShip\(shipCounter)"]
+                                    box.userData = ["marked": true] //, "ship": "mediumShip\(shipCounter)"]
                                 }
                             }
                             status = true
@@ -81,14 +78,11 @@ struct Engine {
                         if box1 != nil && box2 != nil && box3 != nil{
                             for box in enemyArray {
                                 if box.name == box1 {
-                                    box.userData = ["marked": true]
-                                    box.userData = ["ship": "bigShip\(shipCounter)"]
+                                    box.userData = ["marked": true] //, "ship": "bigShip\(shipCounter)"]
                                 } else if box.name == box2 {
-                                    box.userData = ["marked": true]
-                                    box.userData = ["ship": "bigShip\(shipCounter)"]
+                                    box.userData = ["marked": true] //, "ship": "bigShip\(shipCounter)"]
                                 } else if box.name == box3 {
-                                    box.userData = ["marked": true]
-                                    box.userData = ["ship": "bigShip\(shipCounter)"]
+                                    box.userData = ["marked": true] //, "ship": "bigShip\(shipCounter)"]
                                 }
                             }
                             status = true
@@ -119,17 +113,13 @@ struct Engine {
                         if box1 != nil && box2 != nil && box3 != nil && box4 != nil{
                             for box in enemyArray {
                                 if box.name == box1 {
-                                    box.userData = ["marked": true]
-                                    box.userData = ["ship": "battleShip"]
+                                    box.userData = ["marked": true, "ship": "battleShip"]
                                 } else if box.name == box2 {
-                                    box.userData = ["marked": true]
-                                    box.userData = ["ship": "battleShip"]
+                                    box.userData = ["marked": true, "ship": "battleShip"]
                                 } else if box.name == box3 {
-                                    box.userData = ["marked": true]
-                                    box.userData = ["ship": "battleShip"]
+                                    box.userData = ["marked": true, "ship": "battleShip"]
                                 } else if box.name == box4 {
-                                    box.userData = ["marked": true]
-                                    box.userData = ["ship": "battleShip"]
+                                    box.userData = ["marked": true, "ship": "battleShip"]
                                 }
                             }
                             status = true
@@ -137,7 +127,6 @@ struct Engine {
                         
                     default: fatalError("case not found for shipCounter in Engine.setEnemyBoard")
                     }
-                    
                     if status {
                         blockBoxesAround(grid: enemyArray)
                         shipCounter -= 1
@@ -176,13 +165,20 @@ struct Engine {
         return board
     }
     
+    //func used multipley time for different reasons.
+    //1 - simply block boxes (filling color on .red) around box (that contains ship) "marked" as True
+    //2 - hide red boxes filling them with custom  board color so the player wont know where the ships are hiding
+    //3 - if sink is true then check boxes contains proper ship name in userData and turn those boxes around on red
     func blockBoxesAround(grid: [SKShapeNode], hide: Bool? = false, sink: Bool? = false, ship: String? = nil) {
         var status = true
+        var shipToLook: String? = nil
         for box in grid {
             if sink! { // if entire ship is hitted then mark red all squares around it
                 status = false
+                shipToLook = box.userData?["ship"] as? String
             }
-            if box.userData?["marked"] as? Bool == status { //marking boxes where ship lays help mark boxes around each block every time
+            let boxStatus = box.userData?["marked"] as? Bool
+            if boxStatus == status && shipToLook == ship { //marking boxes where ship lays help mark boxes around each block every time
                 let posX = box.position.x
                 let posY = box.position.y
                 for box in grid {
@@ -194,7 +190,7 @@ struct Engine {
                         box.contains(CGPoint(x: (posX - 50), y: (posY - 50))) ||
                         box.contains(CGPoint(x: (posX + 50), y: (posY - 50))) ||
                         box.contains(CGPoint(x: (posX - 50), y: (posY + 50))) ||
-                        box.contains(CGPoint(x: posX, y: posY)) ) && box.userData != ["marked": false]
+                        box.contains(CGPoint(x: posX, y: posY)) ) && box.userData?["marked"] as? Bool != false
                     {
                         if hide! { // when AI stops putting ship on board hide all red boxes (turn back to default board color)
                             box.fillColor = UIColor(red: 70/255, green: 70/255, blue: 70/255, alpha: 1.0)
