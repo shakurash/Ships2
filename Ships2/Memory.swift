@@ -7,6 +7,7 @@ class Memory {
     var turn = Bool()
     var shipHitPoints = [String:Int]()
     var playerShipHitPoints = [String:Int]()
-
+    var reset: Bool = false
+    
     private init() { }
 }

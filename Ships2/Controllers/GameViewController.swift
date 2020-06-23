@@ -12,9 +12,13 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     
+    let memory = Memory.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        presentScene(view: self.view as! SKView, sceneName: "GameScene")
+        if !memory.reset {
+            presentScene(view: self.view as! SKView, sceneName: "GameScene")
+        }
     }
     
     override var shouldAutorotate: Bool {

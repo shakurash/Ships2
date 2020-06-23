@@ -4,6 +4,7 @@ import Foundation
 struct Engine {
     
     let memory = Memory.shared
+    var gameViewController = GameViewController()
     
     func aiTurn(playerBoard: [SKShapeNode]) -> Bool { //this is gonna be super AI brain
         var didHit = false
@@ -165,12 +166,17 @@ struct Engine {
             memoryTable = memory.playerShipHitPoints
         }
 
-        if memoryTable[shipName!]! <= 1 { //better solution -> ship hitpoints ?
+        if memoryTable[shipName!]! <= 1 { //better solution -> instead of checking boxes around -> check ship hitpoints
             isShipSinked = true
         } else {
             memoryTable[shipName!]! -= 1
+            if ai! {
+                memory.playerShipHitPoints = memoryTable
+            } else {
+                memory.shipHitPoints = memoryTable
+            }
         }
-
+        
         if isShipSinked {
             let shipType = box.userData?["ship"] as? String
             blockBoxesAround(grid: board, sink: true, ship: shipType)

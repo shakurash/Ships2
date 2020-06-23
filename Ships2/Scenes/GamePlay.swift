@@ -3,6 +3,7 @@ import GameplayKit
 
 class GamePlay: SKScene {
     
+    var gameViewController = GameViewController()
     let engine = Engine()
     var memory = Memory.shared
     var label = SKLabelNode()
@@ -69,10 +70,18 @@ class GamePlay: SKScene {
     
     func checkWinCondition() {
         if playerHits >= 20 {
-            print("player win")
+            endGame(winner: "player")
         }
         if cpuHits >= 20 {
-            print("cpu win")
+            endGame(winner: "cpu")
+        }
+    }
+    
+    func endGame(winner: String) {
+        if winner == "player" {
+            
+        } else {
+            
         }
     }
 }
