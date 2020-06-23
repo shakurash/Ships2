@@ -5,15 +5,20 @@ struct Engine {
     
     let memory = Memory.shared
     
-    func aiTurn(playerBoard: [SKShapeNode]) { //this is gonna be super AI brain
+    func aiTurn(playerBoard: [SKShapeNode]) -> Bool { //this is gonna be super AI brain
         var didHit = false
+        var hitTheShip = false
         while !didHit {
             let coordinates = aiRandomShipCoordinates()
             let properCoord = coordinates.dropLast()
             for box in playerBoard {
-                if box.name == String(properCoord) && box.fillColor != UIColor.red && box.userData == ["marked": true] {
+                if box.name == String(properCoord) && box.fillColor != UIColor.red && box.userData?["marked"] as? Bool == true {
                     box.fillColor = UIColor.red
+                    box.userData?["marked"] = false
                     didHit = true
+                    hitTheShip = true
+                    _ = checkIfShipSinks(box: box, board: playerBoard, ai: true) //return board but dont need it
+                    return hitTheShip
                 } else if box.name == String(properCoord) && box.fillColor == UIColor.red {
                     didHit = false
                 } else if box.name == String(properCoord) && box.fillColor != UIColor.red {
@@ -22,6 +27,7 @@ struct Engine {
                 }
             }
         }
+        return hitTheShip
     }
     
     func setEnemyBoard(view: SKScene) -> [SKShapeNode]{
@@ -151,14 +157,18 @@ struct Engine {
         return "\(cord1)\(cord2)e"
     }
     
-    func checkIfShipSinks(box: SKShapeNode, board: [SKShapeNode]) -> [SKShapeNode] {
+    func checkIfShipSinks(box: SKShapeNode, board: [SKShapeNode], ai: Bool? = false) -> [SKShapeNode] {
         let shipName = box.userData?["ship"] as? String
+        var memoryTable = memory.shipHitPoints
         var isShipSinked = false
+        if ai! {
+            memoryTable = memory.playerShipHitPoints
+        }
 
-        if memory.shipHitPoints[shipName!]! <= 1 { //better solution -> ship hitpoints ?
+        if memoryTable[shipName!]! <= 1 { //better solution -> ship hitpoints ?
             isShipSinked = true
         } else {
-            memory.shipHitPoints[shipName!]! -= 1
+            memoryTable[shipName!]! -= 1
         }
 
         if isShipSinked {

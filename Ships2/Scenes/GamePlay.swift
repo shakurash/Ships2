@@ -18,7 +18,6 @@ class GamePlay: SKScene {
         memory.turn = true //set player to move first
         setBoards() //load player ship configuration
         changeTurn() //upload current turn
-        print(memory.playerShipHitPoints)
     }
     
     func setBoards() {
@@ -38,9 +37,15 @@ class GamePlay: SKScene {
         } else {
             label.text = "Przeciwnik"
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
-                self.engine.aiTurn(playerBoard: self.playerBoard)
+                let status = self.engine.aiTurn(playerBoard: self.playerBoard)
+                if status { //if ai hit the ship then repeat the move witout changing the turn
+                    self.cpuHits += 1
+                    self.checkWinCondition()
+                    self.changeTurn()
+                } else {
                 self.memory.turn = true
                 self.changeTurn()
+                }
             })
         }
     }
