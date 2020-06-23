@@ -18,6 +18,7 @@ class GamePlay: SKScene {
         memory.turn = true //set player to move first
         setBoards() //load player ship configuration
         changeTurn() //upload current turn
+        print(memory.playerShipHitPoints)
     }
     
     func setBoards() {
@@ -25,7 +26,7 @@ class GamePlay: SKScene {
             for value in memory.board {
                 if box.name == value.name && value.userData == ["marked": true] {
                     box.fillColor = UIColor.green
-                    box.userData = ["marked": true]
+                    box.userData = ["marked": true, "ship": value.shipName]
                 }
             }
         }
@@ -62,8 +63,6 @@ class GamePlay: SKScene {
     }
     
     func checkWinCondition() {
-//                print(playerHits)
-//        print(cpuHits)
         if playerHits >= 20 {
             print("player win")
         }

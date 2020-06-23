@@ -7,7 +7,7 @@ class Configuration: SKScene {
     private var grid = [SKShapeNode]()
     private var shipToDeploy = SKSpriteNode()
     private var pickedShip: SKSpriteNode?
-    private var shipCounter = 2
+    private var shipCounter = 10
     private var shipSpawner = SKShapeNode()
     private var rotateButton = SKSpriteNode()
     private var resetButton = SKSpriteNode()
@@ -44,8 +44,8 @@ class Configuration: SKScene {
     
     func setUserData() {
         for box in grid {
-            if box.userData == ["marked": true] {
-                let save = Board(name: box.name!, userData: box.userData as! [String : Bool])
+            if box.userData?["marked"] as? Bool == true {
+                let save = Board(name: box.name!, userData: ["marked": true], shipName: box.userData?["ship"] as? String ?? "default")
                 memory.board.append(save)
             }
         }
@@ -90,24 +90,27 @@ class Configuration: SKScene {
     func blockBoxes(ship: SKSpriteNode) { //block boxes making them red depending on ship size
         let cordX = locationRotation().x
         let cordY = locationRotation().y
-        
+                
         for box in grid {
             if ship.name == "smallShip" {
                 if box.contains(ship.position) {
-                    box.userData = ["marked": true]
+                    box.userData = ["marked": true, "ship": "\(ship.name!)\(shipCounter)"]
+                    memory.playerShipHitPoints["\(ship.name!)\(shipCounter)"] = 1
                 }
             } else if ship.name == "mediumShip" {
                 if box.contains(CGPoint(x: ship.position.x + cordX , y: ship.position.y + cordY)) ||
                     box.contains(CGPoint(x: ship.position.x - (cordX / 2), y: ship.position.y - (cordY / 2)))
                 {
-                    box.userData = ["marked": true]
+                    box.userData = ["marked": true, "ship": "\(ship.name!)\(shipCounter)"]
+                    memory.playerShipHitPoints["\(ship.name!)\(shipCounter)"] = 2
                 }
             } else if ship.name == "bigShip" {
                 if box.contains(ship.position) ||
                     box.contains(CGPoint(x: ship.position.x - cordX, y: ship.position.y - cordY)) ||
                     box.contains(CGPoint(x: ship.position.x + cordX, y: ship.position.y + cordY))
                 {
-                    box.userData = ["marked": true]
+                    box.userData = ["marked": true, "ship": "\(ship.name!)\(shipCounter)"]
+                    memory.playerShipHitPoints["\(ship.name!)\(shipCounter)"] = 3
                 }
             } else if ship.name == "battleShip" {
                 if box.contains(CGPoint(x: ship.position.x + cordX , y: ship.position.y + cordY)) ||
@@ -115,7 +118,8 @@ class Configuration: SKScene {
                     box.contains(CGPoint(x: ship.position.x + (cordX * 2), y: ship.position.y + (cordY * 2))) ||
                     box.contains(CGPoint(x: ship.position.x - (cordX * 2), y: ship.position.y - (cordY * 2)))
                 {
-                    box.userData = ["marked": true]
+                    box.userData = ["marked": true, "ship": "\(ship.name!)"]
+                    memory.playerShipHitPoints["\(ship.name!)"] = 4
                 }
             }
             
@@ -144,7 +148,6 @@ class Configuration: SKScene {
     func makeShipYard() {
         guard let shipYard = self.childNode(withName: "shipYard") else { return }
         shipSpawner = shipYard as! SKShapeNode
-        
     }
     
     func makeButtonSprites() {
@@ -222,7 +225,7 @@ class Configuration: SKScene {
             
             if box.contains(ship.position) && box.fillColor != UIColor.red {
                 let currentShipBoxPosition = box //remember the position (where currently user is holding ship) to pass it futher and drop/snap ship correctly
-                if ship.name == "smallShip" { didLand = shipAllowedToDrop(in: box, with: ship, cordX: cordX, cordY: cordY) }
+                if ship.name == "smallShip" { didLand = shipAllowedToDrop(in: box, with: ship, cordX: cordX, cordY: cordY)}
                 else {
                     for box in grid {
                         if box.contains(CGPoint(x: location.x - cordX, y: location.y - cordY)) && box.fillColor != UIColor.red {
